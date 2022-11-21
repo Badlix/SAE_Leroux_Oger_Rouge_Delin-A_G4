@@ -52,7 +52,17 @@ void functions::printVectorOfVector(const vector<vector<unsigned>> & vectorOfVec
     }
 }
 
-bool functions::isEntryValid_ranked(const vector<unsigned> & vote, const vector<string> & options) {
+//vector<unsigned> functions::calcScore_Borda(vector<string> & options, vector<vector<unsigned>> & votes){
+//    vector<unsigned> finalScore (options.size(),0);
+//    for (unsigned i = 0 ; i < options.size() ; ++i){
+//        for (unsigned j = 0 ; votes.size() ; ++j){
+//            finalScore[i] += (options.size() - votes[i][j]);
+//        }
+//    }
+//    return finalScore;
+//}
+
+bool functions::isEntryValid_ranked(const vector<string> & options, const vector<unsigned> & vote) {
     // use in the case where options need to be ranked between 1 and options.size()
     if (vote.size() != options.size()) return false;
     unsigned expectedValue (1); //goes from 1 to options.size()
@@ -62,6 +72,45 @@ bool functions::isEntryValid_ranked(const vector<unsigned> & vote, const vector<
         ++expectedValue;
     }
     return true;
+}
+
+bool functions::isEntryValid_Unique(const vector<string> & options, const vector<unsigned> & vote){
+    unsigned counterUpVotes = 0; // It counts the number of 1 in a vote.
+    if (options.size() != vote.size()) return false;
+    for(unsigned value : vote){
+        if (value == 0) continue;
+        if (value == 1) {
+            if (counterUpVotes > 0) return false;
+            ++counterUpVotes;
+        }
+        else return false;
+    }
+    if (counterUpVotes == 0) return false;
+    return true;
+}
+
+vector<unsigned> functions::calcScore_FPTP(const vector<string> & options, const vector<vector<unsigned>> & votes){
+    vector<unsigned> score(options.size(),0);
+    for (vector<unsigned> vote : votes){
+        for (unsigned i(0) ; i < vote.size() ; ++i){
+            if (vote[i] == 1) score[i] += 1;
+        }
+    }
+    return score;
+}
+
+vector<unsigned> functions::calcScore_IRVVoting(const vector<string> & options, const vector<vector<unsigned>> & votes) {
+    vector<unsigned> scores(options.size(), 0);
+    //1er tour
+    scores = functions::calcScore_FPTP(options, votes);
+    unsigned max (0);
+    unsigned sum (0);
+    for (unsigned number : scores) {
+        if (number > max) max = number;
+        sum += number;
+    }
+
+    return scores;
 }
 
 
