@@ -1,6 +1,7 @@
 #include "functions.h"
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -28,8 +29,7 @@ vector<vector<unsigned>> functions::getListVotes(ifstream & file) {
     string line;
     vector<string> ListvaluesStr;
     vector<unsigned> listValuesUnsigned;
-    vector<vector<unsigned>> votes;
-    getline(file, line); // we don't need the first line since it represents the options
+    vector<vector<unsigned>> votes;  
     while(true) {
         getline(file, line);
         if (file.eof()) break;
@@ -43,7 +43,7 @@ vector<vector<unsigned>> functions::getListVotes(ifstream & file) {
     return votes;
 }
 
-void functions::printVectoreOfVector(const vector<vector<unsigned>> & vectorOfVector) {
+void functions::printVectorOfVector(const vector<vector<unsigned>> & vectorOfVector) {
     for (const vector<unsigned> &vector : vectorOfVector) {
         for (unsigned value : vector) {
             cout << value << "  ";
@@ -52,14 +52,17 @@ void functions::printVectoreOfVector(const vector<vector<unsigned>> & vectorOfVe
     }
 }
 
-//bool functions::isEntryValid_ranked(const vector<unsigned> & vote, const vector<string> options) {
-//    // check if an entry contains number from 1 to options.size(), use in the case where options need to be ranked
-//    if (vote.size() == options.size()) return false;
-//    unsigned expectedValue (0); //goes from 0 to options.size()-1
-//    for (size_t i = 0; i < options.size(); ++i) {
-//        if(find(vote.begin(), vote.end(), expectedValue) == options.size()) return false;
-//    }
-//}
+bool functions::isEntryValid_ranked(const vector<unsigned> & vote, const vector<string> & options) {
+    // use in the case where options need to be ranked between 1 and options.size()
+    if (vote.size() != options.size()) return false;
+    unsigned expectedValue (1); //goes from 1 to options.size()
+    for (size_t i = 0; i < options.size(); ++i) {
+        if(find(vote.begin(), vote.end(), expectedValue) == vote.end()) return false; // expected value was not find
+        //cout << i <<" - ok" << endl;
+        ++expectedValue;
+    }
+    return true;
+}
 
 
 
