@@ -122,7 +122,15 @@ vector<vector<unsigned>> functions::TrueVoteEntry(vector<string> & options, vect
     return votes;
 }
 
-
+vector<unsigned> functions::calcScore_Borda(const vector<string> & options, const vector<vector<unsigned>> & votes) {
+    vector<unsigned> scores(options.size(),0);
+    for(unsigned i = 0 ; i < options.size() ; ++i ) {
+        for(unsigned j = 0 ; j < votes.size() ; ++j) {
+            scores[i] += ( options.size() - (votes[j][i]-1) );//It increase the score of the differents variable by taking the value of the number of options minus the value
+        }
+    }
+    return scores;
+}
 
 
 
