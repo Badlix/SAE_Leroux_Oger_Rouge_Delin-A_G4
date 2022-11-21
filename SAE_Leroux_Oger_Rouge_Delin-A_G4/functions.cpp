@@ -113,6 +113,15 @@ vector<unsigned> functions::calcScore_IRVVoting(const vector<string> & options, 
     return scores;
 }
 
+// A VERIF
+vector<vector<unsigned>> functions::TrueVoteEntry(vector<string> & options, vector<vector<unsigned>> & votes){
+    for (unsigned i(0);i<votes.size();++i){
+        bool VoF = functions::isVoteEntry_Unique(options,votes[i]);
+        if (VoF == false) votes.erase(votes.begin() + i);
+    }
+    return votes;
+}
+
 
 
 
