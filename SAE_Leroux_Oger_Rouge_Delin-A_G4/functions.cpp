@@ -24,17 +24,46 @@ vector<string> functions::getListOptions(ifstream & file) {
     return options;
 }
 
-vector<vector<string>> functions::getListVotes(ifstream & file) {
+vector<vector<unsigned>> functions::getListVotes(ifstream & file) {
     string line;
-    vector<vector<string>> votes;
-    getline(file,line); // we don't need the first line since it represents the options
+    vector<string> ListvaluesStr;
+    vector<unsigned> listValuesUnsigned;
+    vector<vector<unsigned>> votes;
+    getline(file, line); // we don't need the first line since it represents the options
     while(true) {
         getline(file, line);
         if (file.eof()) break;
-        votes.push_back(separateWords(line, '-'));
+        ListvaluesStr = separateWords(line, '-');
+        listValuesUnsigned = {};
+        for (const string &value : ListvaluesStr) {
+            listValuesUnsigned.push_back(stoul(value));
+        }
+        votes.push_back(listValuesUnsigned);
     }
     return votes;
 }
+
+void functions::printVectoreOfVector(const vector<vector<unsigned>> & vectorOfVector) {
+    for (const vector<unsigned> &vector : vectorOfVector) {
+        for (unsigned value : vector) {
+            cout << value << "  ";
+        }
+        cout << endl;
+    }
+}
+
+bool functions::isEntryValid_ranked(const vector<unsigned> & vote, const vector<string> options) {
+    // check if an entry contains number from 1 to options.size(), use in the case where options need to be ranked
+    if (vote.size() == options.size()) return false;
+    unsigned expectedValue (0); //goes from 0 to options.size()-1
+    for (size_t i = 0; i < options.size(); ++i) {
+        if(find(vote.begin(), vote.end(), expectedValue) == options.size()) return false;
+    }
+}
+
+
+
+
 
 
 
