@@ -52,14 +52,14 @@ void functions::printVectoreOfVector(const vector<vector<unsigned>> & vectorOfVe
     }
 }
 
-bool functions::isEntryValid_ranked(const vector<unsigned> & vote, const vector<string> options) {
-    // check if an entry contains number from 1 to options.size(), use in the case where options need to be ranked
-    if (vote.size() == options.size()) return false;
-    unsigned expectedValue (0); //goes from 0 to options.size()-1
-    for (size_t i = 0; i < options.size(); ++i) {
-        if(find(vote.begin(), vote.end(), expectedValue) == options.size()) return false;
-    }
-}
+//bool functions::isEntryValid_ranked(const vector<unsigned> & vote, const vector<string> options) {
+//    // check if an entry contains number from 1 to options.size(), use in the case where options need to be ranked
+//    if (vote.size() == options.size()) return false;
+//    unsigned expectedValue (0); //goes from 0 to options.size()-1
+//    for (size_t i = 0; i < options.size(); ++i) {
+//        if(find(vote.begin(), vote.end(), expectedValue) == options.size()) return false;
+//    }
+//}
 
 
 
