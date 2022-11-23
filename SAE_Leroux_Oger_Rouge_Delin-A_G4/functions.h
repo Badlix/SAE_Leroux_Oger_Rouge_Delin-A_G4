@@ -28,6 +28,7 @@ namespace functions
     // Voting functions
     vector<unsigned> calcScore_FPTP(const vector<vector<unsigned>> & votes);
     vector<unsigned> calcScore_IRVVoting(const vector<vector<unsigned>> & votes);
+    void findEliminatedOptions(const vector<unsigned> & scores, vector<unsigned> & indOfeliminatedOptions);
     vector<unsigned> calcScore_Borda(const vector<vector<unsigned>> & votes);
     vector<unsigned> calcScore_Approval(const vector<vector<unsigned>> & votes);
 

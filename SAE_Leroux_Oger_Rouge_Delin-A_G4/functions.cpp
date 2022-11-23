@@ -223,17 +223,34 @@ vector<unsigned> functions::calcScore_FPTP(const vector<vector<unsigned>> & vote
     return scores;
 }
 
+void findEliminatedOptions(const vector<unsigned> & scores, vector<unsigned> & indOfEliminatedOptions) {
+    vector<unsigned> iMin = {0};
+    for (unsigned i (0) ; i < scores.size() ; ++i) {
+        if (scores[i] < scores[iMin[0]] && find(indOfEliminatedOptions.begin(), indOfEliminatedOptions.end(), i) == indOfEliminatedOptions.end()) {
+            iMin[0] = scores[i];
+        } else if (scores[i] == scores[iMin[0]] && i != iMin[0]) {
+
+        }
+    }
+    for (unsigned index : iMin) {
+        indOfEliminatedOptions.push_back(index);
+    };
+}
 // A FINIR
 vector<unsigned> functions::calcScore_IRVVoting(const vector<vector<unsigned>> & votes) {
     vector<unsigned> scores(votes[0].size(), 0);
     //1er tour
- //   scores = functions::calcScore_FPTP(options, votes);
- //   unsigned max (0);
-    //unsigned sum (0);
-//    for (unsigned number : scores) {
-//        if (number > max) max = number;
-//        sum += number;
-//    }
+    scores = functions::calcScore_FPTP(votes);
+    unsigned max (0);
+    unsigned sum (0);
+    for (unsigned number : scores) {
+        if (number > max) max = number;
+        sum += number;
+    }
+    if (max*2 < sum) { // None options have the majority (+50%)
+        vector<unsigned> indOfeliminatedOptions;
+        findEliminatedOptions(scores, indOfeliminatedOptions);
+    }
 
     return scores;
 }
