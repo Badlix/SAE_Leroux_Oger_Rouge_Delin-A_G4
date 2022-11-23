@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 7.0.1, 2022-11-21T17:20:25. -->
+<!-- Written by QtCreator 7.0.1, 2022-11-23T13:56:10. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -241,6 +241,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">SAE_Leroux_Oger_Rouge_Delin-A_G42</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/amuhome/l22011431/SAE_Leroux_Oger_Rouge_Delin-A_G4/SAE_Leroux_Oger_Rouge_Delin-A_G4/SAE_Leroux_Oger_Rouge_Delin-A_G4.pro</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/amuhome/l22011431/SAE_Leroux_Oger_Rouge_Delin-A_G4/SAE_Leroux_Oger_Rouge_Delin-A_G4/SAE_Leroux_Oger_Rouge_Delin-A_G4.pro</value>
+    <value type="QString" key="RunConfiguration.Arguments">&lt; ../Tests/OneInput</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
