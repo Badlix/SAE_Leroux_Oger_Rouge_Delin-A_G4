@@ -8,13 +8,15 @@ using namespace std;
 // candidats = list of candidats for which you can vote
 // votes = list of all votes
 // scores = list of the number of vote/points that each candidats have
+// a vote is a vector of unsigned, it has the same size as candidats
 
 //----------    Functions used to get and parse data from files    ----------//
 
 const vector<string> availibleSysVote = {"FPTP", "Approval", "IROV", "Borda"};
-const string separate = "**********"; // separation between set of entries
+const string separate = "**********"; // separation between sets of entries
 
 vector<string> functions::getListVoteSys() {
+// return the list of the voting systems used for this set of entries
     vector<string> listVoteSys;
     string line;
     getline(cin, line, '\n');
@@ -23,6 +25,7 @@ vector<string> functions::getListVoteSys() {
 }
 
 vector<string> functions::getListcandidats() {
+// return the list of the candidats
     vector<string> candidats;
     string line;
     getline(cin, line, '\n');
@@ -31,6 +34,7 @@ vector<string> functions::getListcandidats() {
 }
 
 vector<vector<unsigned>> functions::getListVotes() {
+// return the list of all votes
     string line;
     vector<string> ListvaluesStr;
     vector<unsigned> listValuesUnsigned;
@@ -50,20 +54,21 @@ vector<vector<unsigned>> functions::getListVotes() {
 }
 
 vector<string> functions::getVoters(ifstream & file) {
+// return a list with the name and surname of voters
     vector<string> voters;
-    string tmpNom;
-    string tmpPrenom;
+    string tmpName;
+    string tmpSurname;
     while(true){
-        getline(file,tmpNom);
-        getline(file,tmpPrenom);
+        getline(file,tmpName);
+        getline(file,tmpSurname);
         if (file.eof()) break;
-        voters.push_back(tmpNom + " " + tmpPrenom );
+        voters.push_back(tmpName + " " + tmpSurname);
     }
     return voters;
 }
 
 vector<string> functions::separateWords(const string & line, const char & delimiter) {
-    // used to separate a string into a vector of string depending of a delimiter
+// used to separate a string into a vector of string depending of a delimiter
     size_t indexBegin (0);
     size_t indexEnd;
     vector<string> words;
@@ -78,6 +83,7 @@ vector<string> functions::separateWords(const string & line, const char & delimi
 //----------   Functions use to check the validity of entries   ----------//
 
 bool functions::isGlobalEntryValid(const vector<string> listVoteSys, const vector<string> & candidats, const vector<vector<unsigned>> votes) {
+// return error if one of the list is empty or can't be used   
     for (const string &voteSys : listVoteSys) {
         if(find(availibleSysVote.begin(), availibleSysVote.end(), voteSys) == availibleSysVote.end()) { // voteSys not find in Availible
             cout << "Uncorrect Voting Systems" << endl;
@@ -95,73 +101,74 @@ bool functions::isGlobalEntryValid(const vector<string> listVoteSys, const vecto
     return true;
 }
 
-//bool functions::isEntryValid_ranked(const vector<string> & candidats, const vector<unsigned> & vote) {
-//    // use in the case where candidats need to be ranked between 1 and candidats.size()
-//    // use in the borda scores and the instant run-off voting
-//    if (vote.size() != candidats.size()) return false;
-//    unsigned expectedValue (1); //goes from 1 to candidats.size()
-//    for (size_t i = 0; i < candidats.size(); ++i) {
-//        if(find(vote.begin(), vote.end(), expectedValue) == vote.end()) return false; // expected value was not find
-//        ++expectedValue;
-//    }
-//    return true;
-//}
+// NOT USED
+bool functions::isEntryValid_ranked(const vector<string> & candidats, const vector<unsigned> & vote) {
+    // use in the case where candidats need to be ranked between 1 and candidats.size()
+    // use in the borda scores and the instant run-off voting
+    if (vote.size() != candidats.size()) return false;
+    unsigned expectedValue (1); //goes from 1 to candidats.size()
+    for (size_t i = 0; i < candidats.size(); ++i) {
+        if(find(vote.begin(), vote.end(), expectedValue) == vote.end()) return false; // expected value was not find
+        ++expectedValue;
+    }
+    return true;
+}
 
-//bool functions::isEntryValid_unique(const vector<string> & candidats, const vector<unsigned> & vote){
-//    // check that there is only one vote
-//    // use in the First-past-the-post voting
-//    unsigned counterUpVotes = 0; // It scoress the number of 1 in a vote.
-//    if (candidats.size() != vote.size()) return false;
-//    for(unsigned value : vote){
-//        if (value == 0) continue;
-//        if (value == 1) {
-//            if (counterUpVotes > 0) return false; // There are more than a vote
-//            ++counterUpVotes;
-//        }
-//        else return false;
-//    }
-//    if (counterUpVotes == 0) return false; // There are no vote
-//    return true;
-//}
+bool functions::isEntryValid_unique(const vector<string> & candidats, const vector<unsigned> & vote){
+    // check that there is only one vote
+    // use in the First-past-the-post voting
+    unsigned counterUpVotes = 0; // It scoress the number of 1 in a vote.
+    if (candidats.size() != vote.size()) return false;
+    for(unsigned value : vote){
+        if (value == 0) continue;
+        if (value == 1) {
+            if (counterUpVotes > 0) return false; // There are more than a vote
+            ++counterUpVotes;
+        }
+        else return false;
+    }
+    if (counterUpVotes == 0) return false; // There are no vote
+    return true;
+}
 
-//bool functions::isEntryValid_binary(const vector<string> & candidats, const vector <unsigned> & vote)
-///* Test function that verify if the vote is correct
-// * (If it contains only zeros and ones) */
-//// use in the approval voting
-//{
-//    if (candidats.size() != vote.size()) return false;
-//    for ( size_t i = 0 ; i < vote.size() ; ++i){
-//        if (vote[i] != 0 || vote[i] != 1) return false ;
-//    }
-//    return true ;
-//}
+bool functions::isEntryValid_binary(const vector<string> & candidats, const vector <unsigned> & vote)
+/* Test function that verify if the vote is correct
+ * (If it contains only zeros and ones) */
+// use in the approval voting
+{
+    if (candidats.size() != vote.size()) return false;
+    for ( size_t i = 0 ; i < vote.size() ; ++i){
+        if (vote[i] != 0 || vote[i] != 1) return false ;
+    }
+    return true ;
+}
 
-//// const vector<string> listSysVotes = {"First-Past-The-Post", "Approval", "Instant Run-Off", "Borda Count"};
-//vector<vector<unsigned>> functions::sortValidVoteEntry(vector<string> & candidats, vector<vector<unsigned>> & votes, const string & sysVote){
-//    unsigned cmp (0) ;
-//    while (cmp < votes.size()) {
-//        if (sysVote == "First-Past-The-Post") {
-//            if (!isEntryValid_unique(candidats, votes[cmp])) {
-//                votes.erase(votes.begin() + cmp);
-//            } else {
-//                ++cmp;
-//            }
-//        } else if (sysVote == "Approval") {
-//            if (!isEntryValid_binary(candidats, votes[cmp])) {
-//                votes.erase(votes.begin() + cmp);
-//            } else {
-//                ++cmp;
-//            }
-//        } else if (sysVote == "Instant Run-Off" || sysVote == "Borda Count") {
-//            if (!isEntryValid_ranked(candidats, votes[cmp])) {
-//                votes.erase(votes.begin() + cmp);
-//            } else {
-//                ++cmp;
-//            }
-//        }
-//    }
-//    return votes;
-//}
+// const vector<string> listSysVotes = {"First-Past-The-Post", "Approval", "Instant Run-Off", "Borda Count"};
+vector<vector<unsigned>> functions::sortValidVoteEntry(vector<string> & candidats, vector<vector<unsigned>> & votes, const string & sysVote){
+    unsigned cmp (0) ;
+    while (cmp < votes.size()) {
+        if (sysVote == "First-Past-The-Post") {
+            if (!isEntryValid_unique(candidats, votes[cmp])) {
+                votes.erase(votes.begin() + cmp);
+            } else {
+                ++cmp;
+            }
+        } else if (sysVote == "Approval") {
+            if (!isEntryValid_binary(candidats, votes[cmp])) {
+                votes.erase(votes.begin() + cmp);
+            } else {
+                ++cmp;
+            }
+        } else if (sysVote == "Instant Run-Off" || sysVote == "Borda Count") {
+            if (!isEntryValid_ranked(candidats, votes[cmp])) {
+                votes.erase(votes.begin() + cmp);
+            } else {
+                ++cmp;
+            }
+        }
+    }
+    return votes;
+}
 
 //----------   General functions used in every vote simulation   ----------//
 
