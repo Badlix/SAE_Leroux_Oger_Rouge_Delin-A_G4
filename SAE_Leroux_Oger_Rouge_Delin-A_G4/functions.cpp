@@ -114,6 +114,7 @@ bool functions::isEntryValid_ranked(const vector<string> & candidats, const vect
     return true;
 }
 
+// NOT USED
 bool functions::isEntryValid_unique(const vector<string> & candidats, const vector<unsigned> & vote){
     // check that there is only one vote
     // use in the First-past-the-post voting
@@ -131,6 +132,7 @@ bool functions::isEntryValid_unique(const vector<string> & candidats, const vect
     return true;
 }
 
+// NOT USED
 bool functions::isEntryValid_binary(const vector<string> & candidats, const vector <unsigned> & vote)
 /* Test function that verify if the vote is correct
  * (If it contains only zeros and ones) */
@@ -143,7 +145,7 @@ bool functions::isEntryValid_binary(const vector<string> & candidats, const vect
     return true ;
 }
 
-// const vector<string> listSysVotes = {"First-Past-The-Post", "Approval", "Instant Run-Off", "Borda Count"};
+// NOT USED
 vector<vector<unsigned>> functions::sortValidVoteEntry(vector<string> & candidats, vector<vector<unsigned>> & votes, const string & sysVote){
     unsigned cmp (0) ;
     while (cmp < votes.size()) {
@@ -221,6 +223,7 @@ string functions::winning(vector <unsigned> & scores, const vector <string> & ca
 //----------   Voting functions   ----------//
 
 vector<unsigned> functions::calcScore_FPTP(const vector<vector<unsigned>> & votes){
+// calculates the score according of the first-past-the-post
     vector<unsigned> scores(votes[0].size(),0);
     for (vector<unsigned> vote : votes){
         for (unsigned i(0) ; i < vote.size() ; ++i){
@@ -230,34 +233,36 @@ vector<unsigned> functions::calcScore_FPTP(const vector<vector<unsigned>> & vote
     return scores;
 }
 
-void functions::findEliminatedcandidats(const vector<unsigned> & scores, vector<unsigned> & indOfEliminatedcandidats) {
+void functions::findEliminatedCandidats(const vector<unsigned> & scores, vector<unsigned> & indOfEliminatedCandidats) {
+// Find and add the candidats with the lowest score to indOfEliminatedCandidats
     unsigned min;
     unsigned iStart (0);
-    while(myFind(indOfEliminatedcandidats, iStart) != -1) {
+    while(myFind(indOfEliminatedCandidats, iStart) != -1) {
         ++iStart;
     }
     min = scores[iStart];
     for (size_t i (iStart) ; i < scores.size() ; ++i) {
-        if (min > scores[i] && myFind(indOfEliminatedcandidats, i) == -1) {
+        if (min > scores[i] && myFind(indOfEliminatedCandidats, i) == -1) {
             min = scores[i];
         }
     }
     for (size_t i = iStart; i < scores.size(); ++i) {
-        if (scores[i] == min && myFind(indOfEliminatedcandidats, i)) {
-            indOfEliminatedcandidats.push_back(i);
+        if (scores[i] == min && myFind(indOfEliminatedCandidats, i)) {
+            indOfEliminatedCandidats.push_back(i);
         }
     }
 }
 // A FINIR
 vector<unsigned> functions::calcScore_IRVVoting(const vector<vector<unsigned>> & votes) {
-    vector<unsigned> indOfeliminatedcandidats = {};
+// calculates the score according of the instant run-off voting
+    vector<unsigned> indOfeliminatedCandidats = {};
     vector<unsigned> scores (votes[0].size(), 0);
     unsigned rankNumber; // index of the
     while(true) {
         fill(scores.begin(),scores.end(), 0);
         for (size_t i = 0; i < votes.size(); ++i) { // check tt les votes
             rankNumber = 1;
-            while (myFind(indOfeliminatedcandidats,myFind(votes[i], rankNumber)) != -1) {
+            while (myFind(indOfeliminatedCandidats,myFind(votes[i], rankNumber)) != -1) {
                 ++rankNumber;
                 if (rankNumber > votes[0].size()) {
                     cout << "erreur";
@@ -273,7 +278,7 @@ vector<unsigned> functions::calcScore_IRVVoting(const vector<vector<unsigned>> &
             sum += number;
         }
         if (max*2 < sum) { // None candidats have the majority (+50%)
-            findEliminatedcandidats(scores, indOfeliminatedcandidats);
+            findEliminatedCandidats(scores, indOfeliminatedCandidats);
         }
         else {
             break;
@@ -283,6 +288,7 @@ vector<unsigned> functions::calcScore_IRVVoting(const vector<vector<unsigned>> &
 }
 
 vector<unsigned> functions::calcScore_Borda(const vector<vector<unsigned>> & votes) {
+// calculates the score according of the Borda Count
     vector<unsigned> scores(votes[0].size(), 0);
     for(unsigned i = 0 ; i < votes[0].size() ; ++i ) {
         for(unsigned j = 0 ; j < votes.size() ; ++j) {
