@@ -13,7 +13,7 @@ using namespace std;
 //----------    Functions used to get and parse data from files    ----------//
 
 const vector<string> availibleSysVote = {"FPTP", "Approval", "IROV", "Borda"};
-const string separate = "**********"; // separation between sets of entries
+const string separate = "**********"; // separation between sets of entries in the file 'Entries'
 
 vector<string> functions::getListVoteSys() {
 // return the list of the voting systems used for this set of entries
@@ -51,20 +51,6 @@ vector<vector<unsigned>> functions::getListVotes() {
         votes.push_back(listValuesUnsigned);
     }
     return votes;
-}
-
-vector<string> functions::getVoters(ifstream & file) {
-// return a list with the name and surname of voters
-    vector<string> voters;
-    string tmpName;
-    string tmpSurname;
-    while(true){
-        getline(file,tmpName);
-        getline(file,tmpSurname);
-        if (file.eof()) break;
-        voters.push_back(tmpName + " " + tmpSurname);
-    }
-    return voters;
 }
 
 vector<string> functions::separateWords(const string & line, const char & delimiter) {
@@ -380,17 +366,17 @@ int functions::myFind(vector<unsigned> vote, unsigned nbToFind) {
     return -1;
 }
 
-//void functions::completeSimulationApprovalVote(vector<string> & voters, vector<string> & candidats)
-///* Simulates entirely a vote by approval.
-// * Takes in parameters the list of voters and the list of candidats.
-// * Prints the results of the elections. */
-//{
-//    vector<vector<unsigned>> votes ;
-//    votes = electionByApproval(voters, candidats);
-//    vector<unsigned> scores ;
-//    scores = calcScore_Approval(votes, candidats);
-//    cout << winning(scores, candidats) << endl ;
-//}
+void functions::completeSimulationApprovalVote(vector<string> & voters, vector<string> & candidats)
+/* Simulates entirely a vote by approval.
+ * Takes in parameters the list of voters and the list of candidats.
+ * Prints the results of the elections. */
+{
+    vector<vector<unsigned>> votes ;
+    votes = electionByApproval(voters, candidats);
+    vector<unsigned> scores ;
+    scores = functions::calcScore_Approval(votes);
+    cout << winning(scores, candidats) << endl ;
+}
 
 
 

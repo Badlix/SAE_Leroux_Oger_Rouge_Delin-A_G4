@@ -21,13 +21,14 @@ int main()
         vector<string> listSysVote = getListVoteSys();
         vector<string> candidats = getListcandidats();
         vector<vector<unsigned>> votes = getListVotes();
-        isGlobalEntryValid(listSysVote, candidats, votes);
+        isGlobalEntryValid(listSysVote, candidats, votes); // check if inputs are usable
         if (cin.eof()) {
             endOfFile = true;
         }
         vector<unsigned> scores;
         string result;
         for (const string &voteSys : listSysVote) {
+        // selects which fonction is used to calculte scores based on the voting system
             if (voteSys == "FPTP") {
                 scores = calcScore_FPTP(votes);
             } else if (voteSys == "Approval") {
