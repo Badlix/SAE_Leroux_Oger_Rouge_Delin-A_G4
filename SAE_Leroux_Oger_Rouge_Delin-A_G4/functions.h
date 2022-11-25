@@ -40,7 +40,9 @@ namespace functions
     // Functions used to generate random vote
     vector<unsigned> votingByApproval(vector<string> & candidates);
     vector<vector<unsigned>> electionByApproval(vector<string> & voters, vector<string> & candidates);
-    void completeSimulationApprovalVote(vector<string> & voters, vector<string> & candidates);
+    // Other
+    void findEliminatedOptions(const vector<unsigned> & scores, vector<unsigned> & indOfEliminatedOptions);
+    int myFind(vector<unsigned> vote, unsigned nbToFind);
 }
 
 #endif // FUNCTIONS_H

@@ -201,7 +201,7 @@ string functions::winning(vector <unsigned> & scores, const vector <string> & op
     string winner;
     for ( size_t i = 0 ; i < options.size() ; ++i){
         if ( scores[i] == scores[winnerIndex] && i != winnerIndex){
-            winner = "Draw between : " + options[winnerIndex] + ", " + functions::draw(scores, options, winnerIndex, winnerIndex+1);
+            winner = "Draw between : " + options[winnerIndex] + functions::draw(scores, options, winnerIndex, winnerIndex+1);
             break;
         }
         else {
@@ -223,35 +223,56 @@ vector<unsigned> functions::calcScore_FPTP(const vector<vector<unsigned>> & vote
     return scores;
 }
 
-void findEliminatedOptions(const vector<unsigned> & scores, vector<unsigned> & indOfEliminatedOptions) {
-    vector<unsigned> iMin = {0};
-    for (unsigned i (0) ; i < scores.size() ; ++i) {
-        if (scores[i] < scores[iMin[0]] && find(indOfEliminatedOptions.begin(), indOfEliminatedOptions.end(), i) == indOfEliminatedOptions.end()) {
-            iMin[0] = scores[i];
-        } else if (scores[i] == scores[iMin[0]] && i != iMin[0]) {
-
+void functions::findEliminatedOptions(const vector<unsigned> & scores, vector<unsigned> & indOfEliminatedOptions) {
+    unsigned min;
+    unsigned iStart (0);
+    while(myFind(indOfEliminatedOptions, iStart) != -1) {
+        ++iStart;
+    }
+    min = scores[iStart];
+    for (size_t i (iStart) ; i < scores.size() ; ++i) {
+        if (min > scores[i] && myFind(indOfEliminatedOptions, i) == -1) {
+            min = scores[i];
         }
     }
-    for (unsigned index : iMin) {
-        indOfEliminatedOptions.push_back(index);
-    };
+    for (size_t i = iStart; i < scores.size(); ++i) {
+        if (scores[i] == min && myFind(indOfEliminatedOptions, i)) {
+            indOfEliminatedOptions.push_back(i);
+        }
+    }
 }
 // A FINIR
 vector<unsigned> functions::calcScore_IRVVoting(const vector<vector<unsigned>> & votes) {
-    vector<unsigned> scores(votes[0].size(), 0);
-    //1er tour
-    scores = functions::calcScore_FPTP(votes);
-    unsigned max (0);
-    unsigned sum (0);
-    for (unsigned number : scores) {
-        if (number > max) max = number;
-        sum += number;
+    vector<unsigned> indOfeliminatedOptions = {};
+    vector<unsigned> scores (votes[0].size(), 0);
+    unsigned rankNumber; // index of the
+    while(true) {
+        fill(scores.begin(),scores.end(), 0);
+        for (size_t i = 0; i < votes.size(); ++i) { // check tt les votes
+            rankNumber = 1;
+            while (myFind(indOfeliminatedOptions,myFind(votes[i], rankNumber)) != -1) {
+                ++rankNumber;
+                if (rankNumber > votes[0].size()) {
+                    cout << "erreur";
+                    return {1};
+                }
+            }
+            scores[myFind(votes[i], rankNumber)] += 1;
+//            cout << i+3 << " : ";
+        }
+        unsigned max (0);
+        unsigned sum (0);
+        for (unsigned number : scores) {
+            if (number > max) max = number;
+            sum += number;
+        }
+        if (max*2 < sum) { // None options have the majority (+50%)
+            findEliminatedOptions(scores, indOfeliminatedOptions);
+        }
+        else {
+            break;
+        }
     }
-    if (max*2 < sum) { // None options have the majority (+50%)
-        vector<unsigned> indOfeliminatedOptions;
-        findEliminatedOptions(scores, indOfeliminatedOptions);
-    }
-
     return scores;
 }
 
@@ -300,13 +321,13 @@ void functions::printVectorOfString(const vector<string> & vector) {
 }
 
 void functions::printVectorOfUnsigned(const vector<unsigned> & vector) {
-    for (size_t i = 0 ; i <= vector.size() ; ++i) {
+    for (size_t i = 0 ; i < vector.size() ; ++i) {
         cout << vector[i] << "  " ;
     }
     cout << endl;
 }
 
-//----------   Functions used to generate random vote   ----------//
+//----------   Other   ----------//
 
 vector <unsigned> functions::votingByApproval (vector<string> & options)
 /* Simulating a singular vote from an individual.
@@ -335,6 +356,16 @@ vector<vector<unsigned>> functions::electionByApproval(vector<string> & voters, 
         votes[i] = votingByApproval(options);
     }
     return votes;
+}
+
+int functions::myFind(vector<unsigned> vote, unsigned nbToFind) {
+    // return index of the element in the vector
+    for (size_t i = 0; i < vote.size(); ++i) {
+        if (vote[i] == nbToFind) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 //void functions::completeSimulationApprovalVote(vector<string> & voters, vector<string> & options)

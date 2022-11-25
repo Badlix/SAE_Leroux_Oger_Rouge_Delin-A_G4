@@ -6,7 +6,7 @@
 using namespace std;
 using namespace functions;
 
-/* list of the voting systems availible =
+/* list of the voting systems availible :
  * - First-Past-The-Post Voting (FTPT)
  * - Approval Voting (Approval)
  * - Instant Run-Off Voting (IROV)
@@ -15,13 +15,13 @@ using namespace functions;
 
 int main()
 {
-    // functions get need to be called in order
+    // functions 'get' need to be called in order
     vector<string> listSysVote = getListVoteSys();
     vector<string> options = getListOptions();
     vector<vector<unsigned>> votes = getListVotes();
     isGlobalEntryValid(listSysVote, options, votes);
     vector<unsigned> scores;
-
+    string result;
     for (const string &voteSys : listSysVote) {
         if (voteSys == "FPTP") {
             scores = calcScore_FPTP(votes);
@@ -29,9 +29,11 @@ int main()
             scores = calcScore_Approval(votes);
         } else if (voteSys == "Borda") {
             scores = calcScore_Borda(votes);
+        } else if (voteSys == "IROV") {
+            scores = calcScore_IRVVoting(votes);
         }
+        result = winning(scores, options);
+        cout << result << endl;
     }
-    string result = winning(scores, options);
-    cout << result << endl;
     return 0;
 }
