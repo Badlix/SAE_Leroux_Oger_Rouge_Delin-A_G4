@@ -41,7 +41,7 @@ int main()
             cout << voteSys << " - " << result << endl;
             }
         if(!endOfFile) {
-            cout << "----------" << endl;
+            cout << "----------" << endl; // delimitations between set of entries
         }
     }
     return 0;
