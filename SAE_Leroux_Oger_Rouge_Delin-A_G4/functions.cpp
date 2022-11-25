@@ -265,6 +265,9 @@ vector<unsigned> functions::calcScore_IRVVoting(const vector<vector<unsigned>> &
         }
         if (max*2 < sum) { // None candidats have the majority (+50%)
             findEliminatedCandidats(scores, indOfeliminatedCandidats);
+            if (indOfeliminatedCandidats.size() == votes[0].size()) {
+                return scores;
+            }
         }
         else {
             break;
