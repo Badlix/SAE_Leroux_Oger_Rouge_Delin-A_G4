@@ -19,9 +19,9 @@ int main()
     bool endOfFile = false;
     while(!endOfFile) {
         vector<string> listSysVote = getListVoteSys();
-        vector<string> options = getListOptions();
+        vector<string> candidats = getListcandidats();
         vector<vector<unsigned>> votes = getListVotes();
-        isGlobalEntryValid(listSysVote, options, votes);
+        isGlobalEntryValid(listSysVote, candidats, votes);
         if (cin.eof()) {
             endOfFile = true;
         }
@@ -37,9 +37,9 @@ int main()
             } else if (voteSys == "IROV") {
                 scores = calcScore_IRVVoting(votes);
             }
-            result = winning(scores, options);
+            result = winning(scores, candidats);
             cout << voteSys << " - " << result << endl;
-            }
+        }
         if(!endOfFile) {
             cout << "----------" << endl; // delimitations between set of entries
         }
