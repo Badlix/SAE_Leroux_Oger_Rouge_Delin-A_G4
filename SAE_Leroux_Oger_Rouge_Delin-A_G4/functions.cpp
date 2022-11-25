@@ -80,7 +80,7 @@ vector<string> functions::separateWords(const string & line, const char & delimi
 bool functions::isGlobalEntryValid(const vector<string> listVoteSys, const vector<string> & options, const vector<vector<unsigned>> votes) {
     for (const string &voteSys : listVoteSys) {
         if(find(availibleSysVote.begin(), availibleSysVote.end(), voteSys) == availibleSysVote.end()) { // voteSys not find in Availible
-            cout << " Uncorrect Voting Systems" << endl;
+            cout << "Uncorrect Voting Systems" << endl;
             return false;
         }
     }
@@ -258,7 +258,6 @@ vector<unsigned> functions::calcScore_IRVVoting(const vector<vector<unsigned>> &
                 }
             }
             scores[myFind(votes[i], rankNumber)] += 1;
-//            cout << i+3 << " : ";
         }
         unsigned max (0);
         unsigned sum (0);
@@ -293,7 +292,7 @@ vector<unsigned> functions::calcScore_Approval(const vector<vector<unsigned>> & 
  * 'votesForCandidate' is an integer of the number of votes they got.
  * The size of the vector equals the number of options. */
 {
-    vector<unsigned> scores(votes[0].size()-1, 0);
+    vector<unsigned> scores(votes[0].size(), 0);
     for ( size_t i = 0 ; i < votes.size() ; ++i ){
         for ( size_t j = 0 ; j < votes[i].size() ; ++j ){
             scores[j] += votes[i][j];

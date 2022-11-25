@@ -16,24 +16,33 @@ using namespace functions;
 int main()
 {
     // functions 'get' need to be called in order
-    vector<string> listSysVote = getListVoteSys();
-    vector<string> options = getListOptions();
-    vector<vector<unsigned>> votes = getListVotes();
-    isGlobalEntryValid(listSysVote, options, votes);
-    vector<unsigned> scores;
-    string result;
-    for (const string &voteSys : listSysVote) {
-        if (voteSys == "FPTP") {
-            scores = calcScore_FPTP(votes);
-        } else if (voteSys == "Approval") {
-            scores = calcScore_Approval(votes);
-        } else if (voteSys == "Borda") {
-            scores = calcScore_Borda(votes);
-        } else if (voteSys == "IROV") {
-            scores = calcScore_IRVVoting(votes);
+    bool endOfFile = false;
+    while(!endOfFile) {
+        vector<string> listSysVote = getListVoteSys();
+        vector<string> options = getListOptions();
+        vector<vector<unsigned>> votes = getListVotes();
+        isGlobalEntryValid(listSysVote, options, votes);
+        if (cin.eof()) {
+            endOfFile = true;
         }
-        result = winning(scores, options);
-        cout << result << endl;
+        vector<unsigned> scores;
+        string result;
+        for (const string &voteSys : listSysVote) {
+            if (voteSys == "FPTP") {
+                scores = calcScore_FPTP(votes);
+            } else if (voteSys == "Approval") {
+                scores = calcScore_Approval(votes);
+            } else if (voteSys == "Borda") {
+                scores = calcScore_Borda(votes);
+            } else if (voteSys == "IROV") {
+                scores = calcScore_IRVVoting(votes);
+            }
+            result = winning(scores, options);
+            cout << voteSys << " - " << result << endl;
+            }
+        if(!endOfFile) {
+            cout << "----------" << endl;
+        }
     }
     return 0;
 }
