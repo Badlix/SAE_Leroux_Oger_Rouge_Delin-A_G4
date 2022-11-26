@@ -1,6 +1,6 @@
 # SAE_Leroux_Oger_Rouge_Delin-A_G4
 
->SAE portat sur les syste les système de votes
+>SAE portant sur les systèmes de votes
 
 ### Systèmes de votes utilisés : ###
 - Le scrutin uninominal majoritaire à un tour 
