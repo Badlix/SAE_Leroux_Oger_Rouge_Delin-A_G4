@@ -9,5 +9,5 @@ Systèmes de votes utilisés :
 - la méthode Borda 
 
 Lien :	
-- [diapo](https://www.canva.com/design/DAFS72lHZyM/lZ8TK4tKzlN0AV6gIEmXUw/edit?utm_content=DAFS72lHZyM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton), [version pdf](Powerpoint_Systemes_de_vote.pdf)
+- [diapo, lien permettant d'avoir les animations et transitions sur les slides](https://www.canva.com/design/DAFS72lHZyM/lZ8TK4tKzlN0AV6gIEmXUw/edit?utm_content=DAFS72lHZyM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) ; [version pdf, sans animation](Powerpoint_Systemes_de_vote.pdf)
 - [présentation du projet](Document_Systemes_de_vote.pdf)
